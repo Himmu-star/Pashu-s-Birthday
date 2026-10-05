@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday To My Best Friend & Sister ❤️</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        roseGold: '#B76E79',
+                        warmRose: '#FFE4E6',
+                        berryDark: '#2C001E',
+                        goldGlow: '#F59E0B',
+                        softLavender: '#F3E8FF'
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        handwriting: ['Caveat', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1.5deg); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.06); }
+        }
+        @keyframes flicker {
+            0%, 100% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
+            25% { transform: scale(1.1) rotate(2deg); opacity: 1; }
+            50% { transform: scale(0.95) rotate(-1deg); opacity: 0.8; }
+            75% { transform: scale(1.15) rotate(1deg); opacity: 1; }
+        }
+
+        .animate-float { animation: float 4s ease-in-out infinite; }
+        .animate-glow { animation: pulseGlow 3s ease-in-out infinite; }
+        .flame { animation: flicker 0.6s ease-in-out infinite; transform-origin: center bottom; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+        }
+
+        /* Custom scrollbar for aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f43f5e;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans selection:bg-rose-500 selection:text-white min-h-screen overflow-x-hidden relative">
+
+    <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-dark border-b border-rose-500/20 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-rose-500 to-amber-400 flex items-center justify-center shadow-lg shadow-rose-500/30">
+                    <i class="fa-solid fa-crown text-white text-sm"></i>
+                </div>
+                <span class="font-serif font-bold text-lg md:text-xl bg-clip-text text-transparent bg-gradient-to-r from-rose-300 via-pink-200 to-amber-200">
+                    Di's Special Day
+                </span>
+            </div>
+
+            <!-- Quick Navigation Controls -->
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-rose-200/80">
+                <a href="#letter" class="hover:text-rose-400 transition">Letter</a>
+                <a href="#memories" class="hover:text-rose-400 transition">Memories</a>
+                <a href="#gratitude" class="hover:text-rose-400 transition">Jar of Gratitude</a>
+                <a href="#vouchers" class="hover:text-rose-400 transition">Coupons</a>
+                <a href="#quiz" class="hover:text-rose-400 transition">Sister Quiz</a>
+                <a href="#wishes" class="hover:text-rose-400 transition">Wish Wall</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button id="soundToggleBtn" onclick="toggleAudio()" class="px-3 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-300 hover:bg-rose-500/20 text-xs md:text-sm font-medium transition flex items-center gap-2">
+                    <i id="soundIcon" class="fa-solid fa-volume-xmark"></i>
+                    <span id="soundText">Music Off</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-24 pb-16 px-4">
+        
+        <section class="max-w-4xl mx-auto text-center py-10 md:py-16 flex flex-col items-center justify-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs md:text-sm font-semibold mb-6 animate-glow">
+                <i class="fa-solid fa-sparkles text-amber-400"></i>
+                <span>To My Favorite Person, Best Friend & Support System</span>
+                <i class="fa-solid fa-sparkles text-amber-400"></i>
+            </div>
+
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-tight mb-4">
+                Happy Birthday, <br class="hidden sm:inline"/>
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-pink-300 to-amber-300 drop-shadow-md">
+                    My Dearest Elder Sister!
+                </span>
+            </h1>
+
+            <p class="max-w-2xl text-slate-300 text-base sm:text-lg md:text-xl font-light mb-10 leading-relaxed">
+                You are my support system, my crime partner, my second mother, and my eternal best friend. Here is a magical website created just for you today!
+            </p>
+
+            <div class="w-full max-w-md bg-gradient-to-b from-slate-900/90 to-slate-950/90 rounded-3xl p-6 border border-rose-500/20 shadow-2xl shadow-rose-950/50 backdrop-blur-md relative overflow-hidden my-2">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl"></div>
+                <p class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-4">Interactive Birthday Cake</p>
+
+                <div class="flex justify-center items-center py-6">
+                    <div class="relative flex flex-col items-center">
+                        <!-- Candles Container -->
+                        <div class="flex space-x-4 mb-1 z-10">
+                            <!-- Candle 1 -->
+                            <div class="flex flex-col items-center cursor-pointer group" onclick="toggleCandle(0)">
+                                <div id="flame-0" class="flame w-4 h-6 bg-gradient-to-t from-amber-500 via-yellow-300 to-white rounded-full shadow-[0_0_12px_#f59e0b]"></div>
+                                <div class="w-2.5 h-10 bg-gradient-to-b from-pink-400 to-rose-600 rounded-sm"></div>
+                            </div>
+                            <!-- Candle 2 -->
+                            <div class="flex flex-col items-center cursor-pointer group" onclick="toggleCandle(1)">
+                                <div id="flame-1" class="flame w-4 h-6 bg-gradient-to-t from-amber-500 via-yellow-300 to-white rounded-full shadow-[0_0_12px_#f59e0b]"></div>
+                                <div class="w-2.5 h-12 bg-gradient-to-b from-purple-400 to-indigo-600 rounded-sm"></div>
+                            </div>
+                            <!-- Candle 3 -->
+                            <div class="flex flex-col items-center cursor-pointer group" onclick="toggleCandle(2)">
+                                <div id="flame-2" class="flame w-4 h-6 bg-gradient-to-t from-amber-500 via-yellow-300 to-white rounded-full shadow-[0_0_12px_#f59e0b]"></div>
+                                <div class="w-2.5 h-10 bg-gradient-to-b from-pink-400 to-rose-600 rounded-sm"></div>
+                            </div>
+                        </div>
+
+                        <!-- Cake Base SVG -->
+                        <div class="w-56 h-32 relative">
+                            <!-- Top Layer -->
+                            <div class="w-56 h-12 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 rounded-t-3xl shadow-inner border-b-4 border-amber-200/40 relative overflow-hidden flex items-center justify-center">
+                                <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:8px_8px]"></div>
+                                <span class="text-xs font-serif text-white/90 italic font-bold">Best Sister Ever</span>
+                            </div>
+                            <!-- Frosting Drips -->
+                            <div class="flex justify-between px-2 -mt-1 z-10">
+                                <div class="w-6 h-4 bg-pink-400 rounded-b-full"></div>
+                                <div class="w-8 h-6 bg-rose-400 rounded-b-full"></div>
+                                <div class="w-6 h-5 bg-pink-400 rounded-b-full"></div>
+                                <div class="w-8 h-7 bg-rose-400 rounded-b-full"></div>
+                                <div class="w-6 h-4 bg-pink-400 rounded-b-full"></div>
+                            </div>
+                            <!-- Bottom Layer -->
+                            <div class="w-56 h-16 bg-gradient-to-r from-rose-800 via-rose-700 to-rose-800 rounded-b-2xl shadow-lg border-t border-rose-400/20 flex flex-col justify-center items-center">
+                                <div class="w-48 h-1 bg-amber-300/30 rounded-full my-1"></div>
+                                <div class="w-40 h-1 bg-amber-300/20 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blow Candle Button & Status -->
+                <div class="mt-4 flex flex-col items-center">
+                    <p id="cakeStatusText" class="text-sm text-rose-200/90 mb-3 font-medium">
+                        ✨ Tap the flames or click below to blow out your candles!
+                    </p>
+                    <button id="blowCandlesBtn" onclick="blowOutAllCandles()" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-bold text-sm shadow-lg shadow-rose-500/25 transform hover:scale-105 transition flex items-center gap-2">
+                        <i class="fa-solid fa-wind"></i> Make a Wish & Blow Candles
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="letter" class="max-w-3xl mx-auto py-12 px-2">
+            <div class="text-center mb-8">
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-rose-200">A Personal Note For You</h2>
+                <p class="text-slate-400 text-sm mt-1">Tap the wax seal to open your handwritten surprise letter</p>
+            </div>
+
+            <div class="relative bg-slate-900/80 border border-rose-500/30 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-xl transition-all duration-500">
+                
+                <!-- Wax Seal Toggle Trigger -->
+                <div id="envelopeSeal" onclick="toggleLetter()" class="cursor-pointer group flex flex-col items-center justify-center p-6 border-2 border-dashed border-rose-500/40 rounded-2xl bg-rose-950/20 hover:bg-rose-950/40 transition">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-red-700 via-rose-600 to-red-800 shadow-xl border-2 border-amber-300/50 flex items-center justify-center transform group-hover:scale-110 transition">
+                        <i class="fa-solid fa-heart text-amber-200 text-2xl"></i>
+                    </div>
+                    <span class="mt-3 text-rose-300 font-semibold text-sm tracking-wide group-hover:text-white transition">
+                        Click Seal to Open Letter
+                    </span>
+                </div>
+
+                <!-- The Unfolded Letter Body (Hidden by default) -->
+                <div id="letterContent" class="hidden mt-6 transition-all duration-700">
+                    <div class="bg-amber-50 text-slate-900 rounded-2xl p-6 sm:p-8 shadow-inner border border-amber-200 font-handwriting text-xl sm:text-2xl leading-relaxed relative">
+                        <!-- Stamp -->
+                        <div class="absolute top-4 right-4 w-12 h-14 border-2 border-dashed border-rose-400/50 rounded flex items-center justify-center text-rose-400 text-xs font-sans rotate-6">
+                            ❤️ Sister
+                        </div>
+
+                        <p class="font-bold text-2xl sm:text-3xl text-rose-900 mb-4">Dearest Elder Sister (Di),</p>
+
+                        <p class="mb-4">
+                            If there’s one thing I’m endlessly grateful for in this world, it’s having you as my elder sister. Growing up, you weren’t just someone living in the same home—you were my protector, my secret keeper, my mentor, and my absolute favorite human being.
+                        </p>
+
+                        <p class="mb-4">
+                            Whenever life got messy, you were the first person I turned to. Your warm hugs, honest advice, and unconditional support have shaped me into who I am today. From late-night random chats and silly laughter to handling tough days together, every single memory with you is precious.
+                        </p>
+
+                        <p class="mb-4">
+                            Thank you for being my rock, my guide, and my built-in best friend. On your birthday, I pray that you receive all the endless joy, peace, love, and success that your heart can possibly hold.
+                        </p>
+
+                        <p class="text-right font-bold text-rose-900 mt-6">
+                            Forever & Always Your Biggest Fan,<br/>
+                            <span class="text-2xl sm:text-3xl font-extrabold text-slate-900">Your Favorite Sibling ❤️️</span>
+                        </p>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <button onclick="toggleLetter()" class="text-xs text-rose-400 hover:underline">
+                            <i class="fa-solid fa-chevron-up mr-1"></i> Close Letter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="memories" class="max-w-5xl mx-auto py-16">
+            <div class="text-center mb-12">
+                <span class="text-xs font-bold uppercase tracking-widest text-rose-400">Through The Years</span>
+                <h2 class="font-serif text-3xl md:text-5xl font-bold text-white mt-1">Our Memory Lane</h2>
+                <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto mt-2">
+                    A visual scrapbook of our favorite moments, silliness, and unbreakable sister bond.
+                </p>
+
+                <!-- Filter Tags -->
+                <div class="flex flex-wrap justify-center gap-2 mt-6">
+                    <button onclick="filterMemories('all')" class="memory-tag active px-4 py-1.5 rounded-full text-xs font-medium bg-rose-500 text-white shadow-md">All Moments</button>
+                    <button onclick="filterMemories('childhood')" class="memory-tag px-4 py-1.5 rounded-full text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Childhood & Nostalgia</button>
+                    <button onclick="filterMemories('adventures')" class="memory-tag px-4 py-1.5 rounded-full text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Adventures & Trips</button>
+                    <button onclick="filterMemories('silly')" class="memory-tag px-4 py-1.5 rounded-full text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Silly Inside Jokes</button>
+                </div>
+            </div>
+
+            <!-- Polaroid Grid (Configured for GitHub Pages root uploads: 1.jpg, 2.jpg, 3.jpg) -->
+            <div id="memoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-2">
+                
+                <!-- Photo 1 Slot -->
+                <div class="memory-card childhood bg-amber-50 p-4 rounded-xl shadow-xl transform rotate-1 hover:rotate-0 transition duration-300 hover:scale-105 border border-amber-200">
+                    <div class="relative overflow-hidden rounded-lg aspect-square bg-slate-200 mb-3 group">
+                        <img src="1.jpg" alt="Memory Photo 1" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='https://placehold.co/600x600/f43f5e/ffffff?text=Insert+1.jpg'"/>
+                        <div class="absolute inset-0 bg-rose-900/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <span class="text-white text-xs bg-slate-900/80 px-3 py-1 rounded-full"><i class="fa-solid fa-image text-rose-400 mr-1"></i> Photo 1.jpg</span>
+                        </div>
+                    </div>
+                    <p class="font-handwriting text-2xl text-slate-800 font-bold">Partner in Crime Since Day One</p>
+                    <p class="text-xs text-slate-600 mt-1">Remember when we used to steal snacks together at midnight? Classic times!</p>
+                </div>
+
+                <!-- Photo 2 Slot -->
+                <div class="memory-card adventures bg-amber-50 p-4 rounded-xl shadow-xl transform -rotate-2 hover:rotate-0 transition duration-300 hover:scale-105 border border-amber-200">
+                    <div class="relative overflow-hidden rounded-lg aspect-square bg-slate-200 mb-3 group">
+                        <img src="2.jpg" alt="Memory Photo 2" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='https://placehold.co/600x600/f43f5e/ffffff?text=Insert+2.jpg'"/>
+                        <div class="absolute inset-0 bg-rose-900/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <span class="text-white text-xs bg-slate-900/80 px-3 py-1 rounded-full"><i class="fa-solid fa-image text-amber-400 mr-1"></i> Photo 2.jpg</span>
+                        </div>
+                    </div>
+                    <p class="font-handwriting text-2xl text-slate-800 font-bold">Best Travel Buddy Ever</p>
+                    <p class="text-xs text-slate-600 mt-1">Exploring new places is always 10x more fun whenever you are by my side.</p>
+                </div>
+
+                <!-- Photo 3 Slot -->
+                <div class="memory-card silly bg-amber-50 p-4 rounded-xl shadow-xl transform rotate-2 hover:rotate-0 transition duration-300 hover:scale-105 border border-amber-200">
+                    <div class="relative overflow-hidden rounded-lg aspect-square bg-slate-200 mb-3 group">
+                        <img src="3.jpg" alt="Memory Photo 3" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='https://placehold.co/600x600/f43f5e/ffffff?text=Insert+3.jpg'"/>
+                        <div class="absolute inset-0 bg-rose-900/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <span class="text-white text-xs bg-slate-900/80 px-3 py-1 rounded-full"><i class="fa-solid fa-image text-pink-400 mr-1"></i> Photo 3.jpg</span>
+                        </div>
+                    </div>
+                    <p class="font-handwriting text-2xl text-slate-800 font-bold">Uncontrollable Laugh Attacks</p>
+                    <p class="text-xs text-slate-600 mt-1">When we start laughing at random things and nobody else understands why.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="gratitude" class="max-w-4xl mx-auto py-16 px-4">
+            <div class="bg-gradient-to-br from-slate-900 via-rose-950/40 to-slate-900 border border-rose-500/30 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    
+                    <!-- Jar Visual -->
+                    <div class="md:col-span-5 flex flex-col items-center text-center">
+                        <div class="relative w-44 h-56 bg-slate-800/60 border-2 border-rose-400/40 rounded-3xl shadow-2xl flex flex-col items-center justify-between p-4 backdrop-blur-sm">
+                            <!-- Lid -->
+                            <div class="w-36 h-6 bg-gradient-to-r from-amber-400 to-amber-600 rounded-t-xl absolute -top-4 shadow-md border border-amber-300"></div>
+                            <div class="mt-4 text-xs font-semibold text-rose-300 uppercase tracking-widest">Jar of Reasons</div>
+                            
+                            <!-- Glowing Stars inside -->
+                            <div class="flex flex-wrap gap-2 justify-center my-auto p-2 opacity-80">
+                                <i class="fa-solid fa-star text-amber-300 text-lg animate-pulse"></i>
+                                <i class="fa-solid fa-heart text-rose-400 text-base animate-bounce"></i>
+                                <i class="fa-solid fa-star text-yellow-200 text-sm"></i>
+                                <i class="fa-solid fa-heart text-pink-400 text-lg animate-pulse"></i>
+                                <i class="fa-solid fa-star text-amber-400 text-base"></i>
+                            </div>
+
+                            <button onclick="drawGratitudeNote()" class="w-full py-2 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-bold rounded-xl text-xs shadow-md transition transform active:scale-95">
+                                <i class="fa-solid fa-hand-pointer mr-1"></i> Pick a Note
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Display Box for Reason -->
+                    <div class="md:col-span-7 flex flex-col justify-center">
+                        <span class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-1">Interactive Star Notes</span>
+                        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-rose-100 mb-4">Why You Are The Best Sister</h3>
+
+                        <div id="noteOutputBox" class="bg-slate-950/70 border border-rose-500/20 rounded-2xl p-6 min-h-[140px] flex items-center justify-center text-center shadow-inner relative">
+                            <p id="noteText" class="text-rose-200 text-base sm:text-lg font-medium italic">
+                                "Click 'Pick a Note' on the jar to unlock a sweet secret reason why you mean the world to me!"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="vouchers" class="max-w-5xl mx-auto py-16 px-4">
+            <div class="text-center mb-10">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Exclusive Birthday Perks</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-white mt-1">Sister Vouchers & Coupons</h2>
+                <p class="text-slate-400 text-sm max-w-lg mx-auto mt-2">
+                    These coupons are 100% valid forever. Click any voucher to redeem it anytime!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Voucher 1 -->
+                <div class="bg-gradient-to-br from-rose-900/60 to-slate-900 border border-rose-500/30 rounded-2xl p-5 shadow-xl relative overflow-hidden group hover:border-rose-400 transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-300">
+                            <i class="fa-solid fa-mug-hot text-lg"></i>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase px-2 py-1 bg-amber-400/20 text-amber-300 rounded-full">No Expiry</span>
+                    </div>
+                    <h4 class="font-bold text-lg text-white mb-1">Free Coffee & Snack On Me</h4>
+                    <p class="text-slate-300 text-xs mb-4">Valid for 1x coffee date at your favorite café or late-night delivery.</p>
+                    <button onclick="redeemCoupon('Free Coffee & Snack Date')" class="w-full py-2 bg-rose-500/20 hover:bg-rose-500 text-rose-200 hover:text-white rounded-xl text-xs font-bold transition border border-rose-500/40">
+                        Redeem Coupon
+                    </button>
+                </div>
+
+                <!-- Voucher 2 -->
+                <div class="bg-gradient-to-br from-purple-900/60 to-slate-900 border border-purple-500/30 rounded-2xl p-5 shadow-xl relative overflow-hidden group hover:border-purple-400 transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-300">
+                            <i class="fa-solid fa-comments text-lg"></i>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase px-2 py-1 bg-amber-400/20 text-amber-300 rounded-full">Unlimited</span>
+                    </div>
+                    <h4 class="font-bold text-lg text-white mb-1">24/7 Venting Session</h4>
+                    <p class="text-slate-300 text-xs mb-4">Call or talk to me anytime, day or night. Guaranteed listening without judgment.</p>
+                    <button onclick="redeemCoupon('24/7 Venting Session')" class="w-full py-2 bg-purple-500/20 hover:bg-purple-500 text-purple-200 hover:text-white rounded-xl text-xs font-bold transition border border-purple-500/40">
+                        Redeem Coupon
+                    </button>
+                </div>
+
+                <!-- Voucher 3 -->
+                <div class="bg-gradient-to-br from-amber-900/60 to-slate-900 border border-amber-500/30 rounded-2xl p-5 shadow-xl relative overflow-hidden group hover:border-amber-400 transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-300">
+                            <i class="fa-solid fa-handshake text-lg"></i>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase px-2 py-1 bg-amber-400/20 text-amber-300 rounded-full">VIP Pass</span>
+                    </div>
+                    <h4 class="font-bold text-lg text-white mb-1">Chore Immunity Pass</h4>
+                    <p class="text-slate-300 text-xs mb-4">I will do your household task or errand for a day with a smile.</p>
+                    <button onclick="redeemCoupon('Chore Immunity Pass')" class="w-full py-2 bg-amber-500/20 hover:bg-amber-500 text-amber-200 hover:text-white rounded-xl text-xs font-bold transition border border-amber-500/40">
+                        Redeem Coupon
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="quiz" class="max-w-3xl mx-auto py-16 px-4">
+            <div class="bg-slate-900/90 border border-rose-500/30 rounded-3xl p-6 sm:p-10 shadow-2xl relative">
+                <div class="text-center mb-6">
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Mini Game</span>
+                    <h2 class="font-serif text-3xl font-bold text-rose-100">Sister Trivia Challenge</h2>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-1">Answer these fun questions to check our sister score!</p>
+                </div>
+
+                <div id="quizContainer">
+                    <div id="questionBox" class="bg-slate-950 p-5 rounded-2xl border border-rose-500/20 mb-6">
+                        <p id="questionText" class="font-semibold text-lg text-rose-200 mb-4">Loading Question...</p>
+                        <div id="optionsContainer" class="space-y-3">
+                            <!-- Options injected dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center text-xs text-slate-400">
+                        <span id="quizProgress">Question 1 of 3</span>
+                        <span id="quizScoreText">Score: 0</span>
+                    </div>
+                </div>
+
+                <div id="quizResult" class="hidden text-center py-6">
+                    <i class="fa-solid fa-trophy text-amber-400 text-5xl mb-3 animate-bounce"></i>
+                    <h3 class="font-serif text-2xl font-bold text-white mb-2">You Are The Ultimate Sister!</h3>
+                    <p id="finalScoreMessage" class="text-rose-200 text-sm mb-6">Score message here</p>
+                    <button onclick="restartQuiz()" class="px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white rounded-full font-bold text-xs">
+                        Play Again
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="wishes" class="max-w-5xl mx-auto py-16 px-4">
+            <div class="text-center mb-10">
+                <span class="text-xs font-bold uppercase tracking-widest text-rose-400">Virtual Wall</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-white mt-1">Birthday Wishes & Messages</h2>
+                <p class="text-slate-400 text-sm max-w-md mx-auto mt-2">
+                    Leave a birthday wish or sticky note on her wall!
+                </p>
+            </div>
+
+            <!-- Wish Form -->
+            <div class="max-w-xl mx-auto bg-slate-900 border border-rose-500/30 p-6 rounded-2xl shadow-xl mb-10">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-rose-300 mb-1">Your Name / Nickname</label>
+                        <input type="text" id="wishAuthor" placeholder="e.g. Your Favorite Sibling" class="w-full bg-slate-950 border border-rose-500/30 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-rose-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-rose-300 mb-1">Your Message</label>
+                        <textarea id="wishText" rows="3" placeholder="Write something sweet for Di..." class="w-full bg-slate-950 border border-rose-500/30 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-rose-400"></textarea>
+                    </div>
+                    <button onclick="addWishNote()" class="w-full py-2.5 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-bold rounded-xl text-sm shadow-md transition">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Post Wish
+                    </button>
+                </div>
+            </div>
+
+            <!-- Wishes Grid -->
+            <div id="wishesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="bg-rose-950/40 border border-rose-500/30 p-5 rounded-2xl shadow-lg relative">
+                    <p class="font-handwriting text-xl text-rose-200 mb-3">"Happiest Birthday to the sweetest, kindest, and funniest sister in the world! Keep shining brightly!"</p>
+                    <div class="text-xs text-rose-400 font-bold text-right">— With endless love ❤️</div>
+                </div>
+
+                <div class="bg-amber-950/40 border border-amber-500/30 p-5 rounded-2xl shadow-lg relative">
+                    <p class="font-handwriting text-xl text-amber-200 mb-3">"May this year bring you all the success, happiness, and delicious food you deserve!"</p>
+                    <div class="text-xs text-amber-400 font-bold text-right">— Forever Your Fan ✨</div>
+                </div>
+
+                <div class="bg-purple-950/40 border border-purple-500/30 p-5 rounded-2xl shadow-lg relative">
+                    <p class="font-handwriting text-xl text-purple-200 mb-3">"Thank you for being my constant support system and rock. Have the best birthday!"</p>
+                    <div class="text-xs text-purple-400 font-bold text-right">— Best Friend Always 🌟</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Toast Notification Overlay -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 border border-rose-500/50 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 pointer-events-none">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-rose-400 text-xl"></i>
+        <span id="toastMessage" class="text-sm font-medium">Notification message</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-rose-500/20 py-8 text-center text-xs text-slate-500 relative z-10 bg-slate-950">
+        <p>Crafted with endless ❤️ for the World's Best Sister</p>
+        <p class="mt-1 text-slate-600">Happy Birthday! Stay blessed and happy always.</p>
+    </footer>
+
+    <script>
+        let candlesLit = [true, true, true];
+        let audioContext = null;
+        let isAudioPlaying = false;
+
+        // Sparkle Engine
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedY = -Math.random() * 0.5 - 0.2;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.opacity = Math.random() * 0.8 + 0.2;
+                this.color = ['#f43f5e', '#fbbf24', '#f472b6', '#a78bfa'][Math.floor(Math.random() * 4)];
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                if (this.y < 0 || this.x < 0 || this.x > canvas.width) {
+                    this.reset();
+                    this.y = canvas.height;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 75; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        function playChimeSound(freq = 523.25) {
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 1);
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                osc.start();
+                osc.stop(audioContext.currentTime + 1);
+            } catch (e) {
+                // Audio fallback for browsers with restricted autoplay
+            }
+        }
+
+        function toggleCandle(index) {
+            candlesLit[index] = !candlesLit[index];
+            const flame = document.getElementById(`flame-${index}`);
+            if (candlesLit[index]) {
+                flame.classList.remove('hidden');
+            } else {
+                flame.classList.add('hidden');
+                playChimeSound(400 + index * 100);
+            }
+            checkCandlesState();
+        }
+
+        function blowOutAllCandles() {
+            candlesLit = [false, false, false];
+            for (let i = 0; i < 3; i++) {
+                const flame = document.getElementById(`flame-${i}`);
+                if (flame) flame.classList.add('hidden');
+            }
+            playChimeSound(600);
+            checkCandlesState();
+            triggerConfetti();
+        }
+
+        function checkCandlesState() {
+            const statusText = document.getElementById('cakeStatusText');
+            const allOut = candlesLit.every(c => !c);
+            if (allOut) {
+                statusText.innerHTML = "🎉 <span class='text-amber-300 font-bold'>YAY! Wishes are blown into the universe!</span> May all your dreams come true! ✨";
+            } else {
+                statusText.innerHTML = "✨ Tap the flames or click below to blow out your candles!";
+            }
+        }
+
+        function triggerConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'fixed z-50 pointer-events-none w-2 h-2 rounded-full';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.top = '-10px';
+                conf.style.backgroundColor = ['#f43f5e', '#fbbf24', '#38bdf8', '#a855f7', '#34d399'][Math.floor(Math.random() * 5)];
+                document.body.appendChild(conf);
+
+                const duration = Math.random() * 3 + 2;
+                conf.animate([
+                    { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translateY(100vh) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                ], {
+                    duration: duration * 1000,
+                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+                }).onfinish = () => conf.remove();
+            }
+            showToast("🎉 Happy Birthday! Wishes sent to the stars!");
+        }
+
+        function toggleLetter() {
+            const letterContent = document.getElementById('letterContent');
+            const seal = document.getElementById('envelopeSeal');
+            
+            if (letterContent.classList.contains('hidden')) {
+                letterContent.classList.remove('hidden');
+                seal.classList.add('hidden');
+                playChimeSound(523.25);
+                showToast("💌 Handwritten letter opened!");
+            } else {
+                letterContent.classList.add('hidden');
+                seal.classList.remove('hidden');
+            }
+        }
+
+        function filterMemories(category) {
+            const cards = document.querySelectorAll('.memory-card');
+            const buttons = document.querySelectorAll('.memory-tag');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-rose-500', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            event.target.classList.remove('bg-slate-800', 'text-slate-300');
+            event.target.classList.add('bg-rose-500', 'text-white');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        const gratitudeReasons = [
+            "You always protect me and stand up for me, no matter what.",
+            "You give the absolute best advice whenever I feel lost.",
+            "Your laughter is contagious and can brighten up the darkest room.",
+            "You never judge me even when I make silly mistakes.",
+            "You are super hardworking and inspire me every single day.",
+            "You remember the smallest details about things I love.",
+            "You are literally my built-in best friend for life!",
+            "You make the best snacks and always share with me.",
+            "You have the kindest heart and care so deeply for everyone.",
+            "Life is simply 1000x happier and brighter with you in it."
+        ];
+
+        function drawGratitudeNote() {
+            const randomIndex = Math.floor(Math.random() * gratitudeReasons.length);
+            const noteText = document.getElementById('noteText');
+            
+            noteText.style.opacity = 0;
+            setTimeout(() => {
+                noteText.innerText = `"${gratitudeReasons[randomIndex]}"`;
+                noteText.style.opacity = 1;
+            }, 200);
+
+            playChimeSound(659.25);
+            showToast("✨ Drawn a new secret star note!");
+        }
+
+        function redeemCoupon(title) {
+            triggerConfetti();
+            showToast(`🎟️ Coupon Saved! You redeemed: "${title}"`);
+        }
+
+        const quizData = [
+            {
+                q: "What is the elder sister's superpower in our house?",
+                options: ["Giving the best advice", "Stealing my clothes/snacks", "Being my defender", "All of the above!"],
+                correct: 3
+            },
+            {
+                q: "What is our ultimate bonding activity?",
+                options: ["Late night coffee & venting", "Random shopping sprees", "Laughing at silly memes", "All of these!"],
+                correct: 3
+            },
+            {
+                q: "Who is the elder sister's official best friend?",
+                options: ["Me (Without a doubt!)", "Me (Obviously!)", "Me (100% Guaranteed!)", "All of the above!"],
+                correct: 0
+            }
+        ];
+
+        let currentQIndex = 0;
+        let quizScore = 0;
+
+        function loadQuestion() {
+            const q = quizData[currentQIndex];
+            document.getElementById('questionText').innerText = q.q;
+            document.getElementById('quizProgress').innerText = `Question ${currentQIndex + 1} of ${quizData.length}`;
+            document.getElementById('quizScoreText').innerText = `Score: ${quizScore}`;
+
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-rose-950/60 border border-rose-500/20 text-rose-100 text-sm font-medium transition flex items-center justify-between';
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-rose-400"></i>`;
+                btn.onclick = () => selectAnswer(idx);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(index) {
+            quizScore += 10;
+            currentQIndex++;
+            playChimeSound(587.33);
+
+            if (currentQIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quizContainer').classList.add('hidden');
+            const resultBox = document.getElementById('quizResult');
+            resultBox.classList.remove('hidden');
+            document.getElementById('finalScoreMessage').innerText = `Perfect Score ${quizScore} Points! You two are truly the dream sister duo! 💖`;
+            triggerConfetti();
+        }
+
+        function restartQuiz() {
+            currentQIndex = 0;
+            quizScore = 0;
+            document.getElementById('quizResult').classList.add('hidden');
+            document.getElementById('quizContainer').classList.remove('hidden');
+            loadQuestion();
+        }
+        loadQuestion();
+
+        function addWishNote() {
+            const author = document.getElementById('wishAuthor').value.trim() || 'Well-Wisher';
+            const text = document.getElementById('wishText').value.trim();
+
+            if (!text) {
+                showToast("⚠️ Please write a message before posting!");
+                return;
+            }
+
+            const grid = document.getElementById('wishesGrid');
+            const card = document.createElement('div');
+            card.className = 'bg-rose-950/40 border border-rose-500/30 p-5 rounded-2xl shadow-lg relative animate-float';
+            card.innerHTML = `
+                <p class="font-handwriting text-xl text-rose-200 mb-3">"${text}"</p>
+                <div class="text-xs text-rose-400 font-bold text-right">— ${author} ❤️</div>
+            `;
+
+            grid.prepend(card);
+            document.getElementById('wishAuthor').value = '';
+            document.getElementById('wishText').value = '';
+            
+            showToast("✨ Wish posted to the wall!");
+            playChimeSound(783.99);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            toastMsg.innerText = message;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function toggleAudio() {
+            isAudioPlaying = !isAudioPlaying;
+            const soundIcon = document.getElementById('soundIcon');
+            const soundText = document.getElementById('soundText');
+
+            if (isAudioPlaying) {
+                soundIcon.className = "fa-solid fa-volume-high text-amber-300";
+                soundText.innerText = "Music On";
+                playChimeSound(523.25);
+                setTimeout(() => playChimeSound(659.25), 200);
+                setTimeout(() => playChimeSound(783.99), 400);
+                showToast("🎵 Celebration Chimes Activated!");
+            } else {
+                soundIcon.className = "fa-solid fa-volume-xmark";
+                soundText.innerText = "Music Off";
+            }
+        }
+    </script>
+</body>
+</html>
